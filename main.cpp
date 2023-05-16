@@ -26,19 +26,16 @@ unsigned long long int cpfFormat(string init){
     return strtoll(final.str().c_str(),NULL, 10);
 };
 
-/*
-int dataFormat(string init){
-    stringstream final;
-    int size = init.size();
-    for(int i = 0; i < size; i++){
-        if(init[i]!='/'){
-            final << init[i];
-        }
+void cpfSearch(avl_tree<unsigned long long int,Pessoa> &tree, string cpf){
+    Node<unsigned long long int,Pessoa> *aux = tree.search(cpfFormat(cpf));
+    if(aux==nullptr){
+        cout << "Pessoa não econtrada." << endl;
     }
-
-    return stoi(final.str());
-};
-*/
+    else{
+        cout << *aux->data << endl;
+    }
+    
+}
 
 int main(){
     system("chcp 65001 > nul");
@@ -92,11 +89,11 @@ int main(){
         tree_cpf.add(lista[i].getCpf(),aux);
     }
 
-    //Protótipo da função pesquisar por cpf
-    Node<unsigned long long int,Pessoa> *aux = tree_cpf.search(cpfFormat("313.955.318-89"));
-    cout << *aux->data << endl;
 
+    cpfSearch(tree_cpf,"421.155.516-50");
+    
 
+    
     people.close();
 
 }
