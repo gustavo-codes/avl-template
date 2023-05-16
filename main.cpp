@@ -97,34 +97,6 @@ int main(){
     cout << *aux->data << endl;
 
 
-/*
-    Pessoa *p = new Pessoa(cpfFormat("054.684.013-20"), "Gustavo", "Freitas", "10/22/2003", "Sao joao");
-    Pessoa *p2 = new Pessoa(cpfFormat("913.123.111-23"), "James", "Lima", "01/22/2003", "Limoeiro");
-    Pessoa *p3 = new Pessoa(cpfFormat("013.123.111-23"), "Vitor", "Gaiato", "01/22/2003", "Tabuleiro");
-    //Pessoa *p3 = new Pessoa(cpfFormat("054.684.013-20"), "Gustavo", "Freitas", "10/24/2003", "Sao joao");
-    Pessoa *p4 = new Pessoa(cpfFormat("054.684.013-20"), "Gustavo", "Freitas", "10/22/2003", "Sao joao");
-
-    avl_tree<unsigned long long int,Pessoa> t;
-    t.add(p2->getCpf(),p2);
-    t.add(p3->getCpf(),p3);
-    t.add(p->getCpf(),p);
-    
-    avl_tree<string,Pessoa> t2;
-    t2.add(p2->getNome(),p2);
-    t2.add(p3->getNome(),p3);
-    t2.add(p->getNome(),p);
-
-    avl_tree<Date,Pessoa> t3;
-    t3.add(p2->getNascimento(),p2);
-    t3.add(p3->getNascimento(),p3);
-    t3.add(p->getNascimento(),p);
-
-    
-
-    cout << "Organizada por idade: " << endl;
-    t3.bshow();
-*/
-
     people.close();
 
 }
