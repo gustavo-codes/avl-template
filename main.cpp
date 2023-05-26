@@ -27,14 +27,26 @@ unsigned long long int cpfFormat(string init){
 };
 
 void cpfSearch(avl_tree<unsigned long long int,Pessoa> &tree, string cpf){
-    Node<unsigned long long int,Pessoa> *aux = tree.search(cpfFormat(cpf));
-    if(aux==nullptr){
-        cout << "Pessoa não econtrada." << endl;
-    }
-    else{
-        cout << *aux->data << endl;
+    vector<Node<unsigned long long int,Pessoa>*>aux = tree.search(cpfFormat(cpf));
+    if(aux.size()==0){
+        cout << "Pessoa não encontrada" << endl;
+    }else{
+        aux[0]->data->show();
     }
     
+}
+
+void nameSearch(avl_tree<string,Pessoa> &tree, string nome){
+    vector<Node<string,Pessoa>*>aux = tree.search(nome);
+    if(aux.size()==0){
+        cout << "Pessoa não encontrada" << endl;
+    }else{   
+        for(int i = 0; i< (int)aux.size();i++){
+            cout << "---------------- Pessoa " << i+1 << " ----------------" << endl;
+            aux[i]->data->show();
+            cout << "------------------------------------------" << endl;
+        }
+    }
 }
 
 int main(){
@@ -83,14 +95,43 @@ int main(){
     }
     
     avl_tree<unsigned long long int, Pessoa> tree_cpf;
+    avl_tree<string, Pessoa> tree_name;
 
     for(int i = 0; i<(int)lista.size();i++){
         Pessoa* aux = &lista[i];
         tree_cpf.add(lista[i].getCpf(),aux);
     }
+    for(int i = 0; i<(int)lista.size();i++){
+        Pessoa* aux = &lista[i];
+        tree_name.add(lista[i].getNome(),aux);
+    }
 
+    unsigned int op = 9;
+    while(op!=0){
+        string temp;
+        cout << "-------------------- Arvore AVL --------------------" << endl;
+        cout << "1 - Buscar pessoa por CPF" << endl;
+        cout << "2 - Buscar pessoa por Nome" << endl;
+        cout << "3 - Buscar pessoa por Data de nascimento" << endl;
+        cout << "0 - Sair do programa" << endl;
+        cin >> op;
 
-    cpfSearch(tree_cpf,"421.155.516-50");
+        switch (op)
+        {
+        case 1:
+            cout << "Digite o CPF no formato xxx.xxx.xxx-xx: ";
+            cin >> temp;
+            cpfSearch(tree_cpf,temp);
+            break;
+        case 2:
+            cout << "Digite o primeiro nome: ";
+            cin >> temp;
+            nameSearch(tree_name,temp);
+            break;
+        default:
+            break;
+        }
+    }
     
 
     
