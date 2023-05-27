@@ -27,7 +27,7 @@ unsigned long long int cpfFormat(string init){
 };
 
 void cpfSearch(avl_tree<unsigned long long int,Pessoa> &tree, string cpf){
-    vector<Node<unsigned long long int,Pessoa>*>aux = tree.search(cpfFormat(cpf));
+    vector<Node<unsigned long long int,Pessoa>*>aux = tree.search(cpfFormat(cpf),cpfFormat(cpf));
     if(aux.size()==0){
         cout << "Pessoa não encontrada" << endl;
     }else{
@@ -37,7 +37,7 @@ void cpfSearch(avl_tree<unsigned long long int,Pessoa> &tree, string cpf){
 }
 
 void nameSearch(avl_tree<string,Pessoa> &tree, string nome){
-    vector<Node<string,Pessoa>*>aux = tree.search(nome);
+    vector<Node<string,Pessoa>*>aux = tree.search(nome,nome);
     if(aux.size()==0){
         cout << "Pessoa não encontrada" << endl;
     }else{   
@@ -48,6 +48,20 @@ void nameSearch(avl_tree<string,Pessoa> &tree, string nome){
         }
     }
 }
+
+void dateSearch(avl_tree<Date,Pessoa> &tree, Date dataMin, Date dataMax){
+    vector<Node<Date,Pessoa>*>aux = tree.search(dataMin,dataMax);
+    if(aux.size()==0){
+        cout << "Pessoa não encontrada" << endl;
+    }else{   
+        for(int i = 0; i< (int)aux.size();i++){
+            cout << "---------------- Pessoa " << i+1 << " ----------------" << endl;
+            aux[i]->data->show();
+            cout << "------------------------------------------" << endl;
+        }
+    }
+}
+
 
 int main(){
     system("chcp 65001 > nul");
@@ -96,6 +110,7 @@ int main(){
     
     avl_tree<unsigned long long int, Pessoa> tree_cpf;
     avl_tree<string, Pessoa> tree_name;
+    avl_tree<Date, Pessoa> tree_date;
 
     for(int i = 0; i<(int)lista.size();i++){
         Pessoa* aux = &lista[i];
@@ -105,10 +120,15 @@ int main(){
         Pessoa* aux = &lista[i];
         tree_name.add(lista[i].getNome(),aux);
     }
+    for(int i = 0; i<(int)lista.size();i++){
+        Pessoa* aux = &lista[i];
+        tree_date.add(lista[i].getNascimento(),aux);
+    }
 
     unsigned int op = 9;
     while(op!=0){
         string temp;
+        string temp2;
         cout << "-------------------- Arvore AVL --------------------" << endl;
         cout << "1 - Buscar pessoa por CPF" << endl;
         cout << "2 - Buscar pessoa por Nome" << endl;
@@ -128,6 +148,24 @@ int main(){
             cin >> temp;
             nameSearch(tree_name,temp);
             break;
+        case 3:
+            cout << "Deseja pesquisar por pessoas de MM/DD/AAAA: ";
+            cin >> temp;
+            cout << "de " << temp << " ate MM/DD/AAAA: " ;
+            cin >> temp2;
+            Date min;
+            Date max;
+            Date test;
+
+            min.toDate(temp);
+            max.toDate(temp2);
+
+            if(min>max){
+                cout << "Digite um intervalo de tempo válido" << endl;
+            }else{
+                dateSearch(tree_date,min,max);
+            }
+            
         default:
             break;
         }

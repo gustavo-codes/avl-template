@@ -12,7 +12,7 @@ public:
     avl_tree() = default;
     avl_tree(const avl_tree& t) = delete;
     avl_tree& operator=(const avl_tree& t) = delete;
-    vector<Node<T,D>*> search(T k);
+    vector<Node<T,D>*> search(T min, T max);
     void add(T key, D* data); 
     void bshow() const;
     void clear();
@@ -23,7 +23,7 @@ private:
     Node<T,D>* root {nullptr};
     int height(Node<T,D>* node);
     int balance(Node<T,D> *node);
-    void searchSimilar(Node<T,D>* p, vector<Node<T,D>*> &vec, T k);
+    void searchSimilar(Node<T,D>* p, vector<Node<T,D>*> &vec, T min, T max);
     Node<T,D>* add(Node<T,D>*p, T key, D* data); 
     Node<T,D>* rightRotation(Node<T,D> *p);
     Node<T,D>* leftRotation(Node<T,D> *p);
@@ -109,27 +109,27 @@ Node<T,D>* avl_tree<T,D>::add(Node<T,D> *p, T key, D* data) {
 }
 
 template <typename T, typename D>
-void avl_tree<T,D>::searchSimilar(Node<T,D>* p, vector<Node<T,D>*> &vec, T k){
-    if(p==nullptr || p->key > k || p->key < k){
+void avl_tree<T,D>::searchSimilar(Node<T,D>* p, vector<Node<T,D>*> &vec, T min, T max){
+    if(p==nullptr || p->key > max || p->key < min){
         return;
     }else{
         vec.push_back(p);
-        searchSimilar(p->left,vec,k);
-        searchSimilar(p->right,vec,k);
+        searchSimilar(p->left,vec,min,max);
+        searchSimilar(p->right,vec,min,max);
     }
 }
 
 //Busca o node com a chave T
 template <typename T, typename D>
-vector<Node<T,D>*> avl_tree<T,D>::search(T k) {
+vector<Node<T,D>*> avl_tree<T,D>::search(T min, T max) {
     Node<T,D>* aux = root;
     vector<Node<T,D>*> vec;
     while(aux!=nullptr){
-        if(aux->key == k){
-            searchSimilar(aux,vec,k);
+        if(aux->key >= min && aux->key <= max){
+            searchSimilar(aux,vec,min,max);
             return vec;
         }else{
-            if(k < aux->key){
+            if(min < aux->key){
                 aux = aux->left;
             }else{
                 aux = aux->right;

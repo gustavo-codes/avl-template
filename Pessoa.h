@@ -25,9 +25,9 @@ public:
 
     std::string toStr(){
         std::stringstream date;
-        date << mes;
+        date << dia;
         date<< '/';
-        date<< dia;
+        date<< mes;
         date<< '/';
         date<< ano;
 
@@ -37,37 +37,49 @@ public:
     bool operator<(Date const& other){
         if(this->ano < other.ano){
             return true;
-        }else if(this->mes < other.mes){
-            return true;
-        }else if(this->dia < other.dia){
-            return true;
-        }else{
+        }else if(this->ano > other.ano){
             return false;
+        }else{
+            if(this->mes < other.mes){
+                return true;
+            }else if(this->mes > other.mes){
+                return false;
+            }else{
+                if(this->dia < other.dia){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
     }
-
+//10/03/2003 > 10/02/2003
     bool operator>(Date const& other){
         if(this->ano > other.ano){
             return true;
-        }else if(this->mes > other.mes){
-            return true;
-        }else if(this->dia > other.dia){
-            return true;
-        }else{
+        }else if(this->ano < other.ano){
             return false;
+        }else{
+            if(this->mes > other.mes){
+                return true;
+            }else if(this->mes < other.mes){
+                return false;
+            }else{
+                if(this->dia > other.dia){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
     }
 
     bool operator>=(Date const& other){
-        if(this->ano >= other.ano){
-            return true;
-        }else if(this->mes >= other.mes){
-            return true;
-        }else if(this->dia >= other.dia){
-            return true;
-        }else{
-            return false;
-        }
+        return !(*this<other);
+    }
+
+    bool operator<=(Date const& other){
+        return !(*this>other);;
     }
 
     
