@@ -93,6 +93,26 @@ string normalizeName(string &name){
     return ss.str();
 }
 
+//Checa se a data passada contém algum caractere além dos aceitados 0..9 e '/'
+bool dataCheck(string s){
+    Date d;
+    for(int i = 0;i<(int)s.size();i++){
+        if(s[i]>(char)57||s[i]<(char)47){
+            cout << "Data inválida" << endl;
+            return false;
+        }
+    }
+    d.brToDate(s);
+    if(d.dia<0 || d.dia>31){
+        cout << "Digitar um dia valido" << endl;
+        return false;
+    }
+    if(d.mes<1 || d.mes>12 ){
+        cout << "Digitar um mes valido" << endl;
+        return false;
+    }
+    return true;
+}
 
 int main(){
     system("chcp 65001 > nul");
@@ -159,6 +179,7 @@ int main(){
 
     //Menu com switch 
     unsigned int op = 9;
+    string operation;
     while(op!=0){
         string temp;
         string temp2;
@@ -167,49 +188,57 @@ int main(){
         cout << "2 - Buscar pessoa por Nome" << endl;
         cout << "3 - Buscar pessoa por Data de nascimento" << endl;
         cout << "0 - Sair do programa" << endl;
-        cin >> op;
-        
-        switch (op)
-        {
-        case 0:
-            cout << "Saindo do programa..." << endl;
-            cout << "Desalocando memoria..." << endl;
-            break;
-        case 1:
-            cout << "Digite o CPF no formato xxx.xxx.xxx-xx: ";
-            cin >> temp;
-            cpfSearch(tree_cpf,temp);
-            break;
-        case 2:
-            cout << "Digite o primeiro nome: ";
-            cin >> temp;
-            temp = normalizeName(temp);
-            nameSearch(tree_name,temp);
-            break;
-        case 3:
-            cout << "Deseja pesquisar por pessoas de DD/MM/AAAA: ";
-            cin >> temp;
-            cout << "de " << temp << " ate DD/MM/AAAA: " ;
-            cin >> temp2;
-            Date min;
-            Date max;
+        cin >> operation;
 
-            min.brToDate(temp);
-            max.brToDate(temp2);
+        if(isdigit(operation[0])){
+            op = stoi(operation);
+            switch (op)
+            {
+            case 0:
+                cout << "Saindo do programa..." << endl;
+                cout << "Desalocando memoria..." << endl;
+                break;
+            case 1:
+                cout << "Digite o CPF no formato xxx.xxx.xxx-xx: ";
+                cin >> temp;
+                cpfSearch(tree_cpf,temp);
+                break;
+            case 2:
+                cout << "Digite o primeiro nome: ";
+                cin >> temp;
+                temp = normalizeName(temp);
+                nameSearch(tree_name,temp);
+                break;
+            case 3:
+                cout << "Deseja pesquisar por pessoas de DD/MM/AAAA: ";
+                cin >> temp;
+                cout << "de " << temp << " ate DD/MM/AAAA: " ;
+                cin >> temp2;
+                Date min;
+                Date max;
 
-            if(min.dia<0 || min.dia>31 || max.dia<0 || max.dia>31){
-                cout << "Digitar um dia valido" << endl;
-            }else if(min.mes<1 || min.mes>12 || max.mes<1 || max.mes>12){
-                cout << "Digitar um mes valido" << endl;
-            }else if(min>max){
-                cout << "Digite um intervalo de tempo valido" << endl;
-            }else{
-                dateSearch(tree_date,min,max);
-            }
-            
-        default:
-            break;
+                if(dataCheck(temp)&&dataCheck(temp2)){
+                    min.brToDate(temp);
+                    max.brToDate(temp2);
+
+                    if(min>max){
+                        cout << "Digite um intervalo de tempo valido" << endl;
+                    }else{
+                        dateSearch(tree_date,min,max);
+                    }
+                }
+                break;
+                
+            default:
+                cout << "Selecione uma opcao valida" << endl;
+                break;
+            }            
+        }else{
+            cout << "Selecione uma opcao valida" << endl;
+            operation.clear();
         }
+        
+
     }
     
     tree_cpf.clear();
