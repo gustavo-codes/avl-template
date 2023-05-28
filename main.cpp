@@ -96,11 +96,19 @@ string normalizeName(string &name){
 //Checa se a data passada contém algum caractere além dos aceitados 0..9 e '/'
 bool dataCheck(string s){
     Date d;
+    int barCount = 0;
     for(int i = 0;i<(int)s.size();i++){
+        if(s[i]=='/'){
+            barCount++;
+        }
         if(s[i]>(char)57||s[i]<(char)47){
             cout << "Data inválida" << endl;
             return false;
         }
+    }
+    if(barCount!=2){
+        cout << "O formato da data precisa estar separado por exatamente duas /(barra)" << endl;
+        return false;
     }
     d.brToDate(s);
     if(d.dia<0 || d.dia>31){
