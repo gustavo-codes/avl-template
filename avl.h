@@ -108,6 +108,7 @@ Node<T,D>* avl_tree<T,D>::add(Node<T,D> *p, T key, D* data) {
     return p;
 }
 
+//Função que preenche um vetor com os nodes entre o intervalo min e max
 template <typename T, typename D>
 void avl_tree<T,D>::searchSimilar(Node<T,D>* p, vector<Node<T,D>*> &vec, T min, T max){
     if(p==nullptr || p->key > max || p->key < min){
@@ -119,7 +120,7 @@ void avl_tree<T,D>::searchSimilar(Node<T,D>* p, vector<Node<T,D>*> &vec, T min, 
     }
 }
 
-//Busca o node com a chave T
+//Busca os nodes com as chaves entre min e max
 template <typename T, typename D>
 vector<Node<T,D>*> avl_tree<T,D>::search(T min, T max) {
     Node<T,D>* aux = root;
@@ -154,7 +155,6 @@ Node<T,D>* avl_tree<T,D>::fixup_node(Node<T,D> *p, T key) { //Função que receb
     if(bal >= -1 && bal <= 1) {
         return p;
     }
-    //Aplica a devida rotação e atualiza o nó pai também, juntamente com o ponteiro root, caso o ponteiro root sofra rotação
     if(bal < -1 && key < p->left->key) {
         p = rightRotation(p);
     }

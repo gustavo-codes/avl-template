@@ -161,9 +161,30 @@ public:
     void setCidade(std::string cidade){
         this->cidade = cidade;
     }
+    //Função que converte um ull para string no formato de cpf afim de facilitar a vizualização
+    std::string cpfToString(unsigned long long int n){
+        std::string num = std::to_string(n);
+        std::stringstream ss;
+        for(int i = 0;i<3;i++){
+            ss << num[i];
+        }
+        ss << '.';
+        for(int i = 3;i<6;i++){
+            ss << num[i];
+        }
+        ss << '.';
+        for(int i = 6;i<9;i++){
+            ss << num[i];
+        }
+        ss << '-';
+        for(int i = 9;i<=10;i++){
+            ss << num[i];
+        }
+        return ss.str();
+    }
 
     void show(){
-        std::cout << "Cpf: " << getCpf() << std::endl;
+        std::cout << "Cpf: " << cpfToString(getCpf())<< std::endl;
         std::cout << "Nome: " << getNome() << std::endl;
         std::cout << "Sobrenome: " << getSobrenome() << std::endl;
         std::cout << "Data nasimento: " << nascimento.toStr() << std::endl;

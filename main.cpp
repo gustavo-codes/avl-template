@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <cctype>
 #include "Pessoa.h"
 #include "avl.h"
 
@@ -26,16 +27,20 @@ unsigned long long int cpfFormat(string init){
     return strtoll(final.str().c_str(),NULL, 10);
 };
 
+//Função de busca por cpf
 void cpfSearch(avl_tree<unsigned long long int,Pessoa> &tree, string cpf){
     vector<Node<unsigned long long int,Pessoa>*>aux = tree.search(cpfFormat(cpf),cpfFormat(cpf));
     if(aux.size()==0){
         cout << "Pessoa não encontrada" << endl;
     }else{
-        aux[0]->data->show();
+            cout << "----------------- Pessoa -----------------" << endl;
+            aux[0]->data->show();
+            cout << "------------------------------------------" << endl;
     }
     
 }
 
+//Função de busca por primeiro nome
 void nameSearch(avl_tree<string,Pessoa> &tree, string nome){
     vector<Node<string,Pessoa>*>aux = tree.search(nome,nome);
     if(aux.size()==0){
@@ -49,6 +54,7 @@ void nameSearch(avl_tree<string,Pessoa> &tree, string nome){
     }
 }
 
+//Função de busca por data de nascimento
 void dateSearch(avl_tree<Date,Pessoa> &tree, Date dataMin, Date dataMax){
     vector<Node<Date,Pessoa>*>aux = tree.search(dataMin,dataMax);
     if(aux.size()==0){
@@ -60,6 +66,31 @@ void dateSearch(avl_tree<Date,Pessoa> &tree, Date dataMin, Date dataMax){
             cout << "------------------------------------------" << endl;
         }
     }
+}
+
+//Padroniza a string para o padrão correto ex: GUSTAVO -> Gustavo
+string normalizeName(string &name){
+    stringstream ss;
+    if(name.empty()){
+        return "";
+    }
+    if(islower(name[0])){
+        ss << (char)toupper(name[0]);
+    }else{
+        ss << name[0];
+    }
+    if(name.size()>0){
+        for(int i = 1; i<(int)name.size();i++){
+            if(isupper(name[i])){
+                ss << (char)tolower(name[i]);
+            }else{
+                ss << name[i];
+            }
+            
+        }
+    }
+
+    return ss.str();
 }
 
 
@@ -108,6 +139,7 @@ int main(){
         
     }
     
+    //Criação das árvores de ponteiros.
     avl_tree<unsigned long long int, Pessoa> tree_cpf;
     avl_tree<string, Pessoa> tree_name;
     avl_tree<Date, Pessoa> tree_date;
@@ -125,19 +157,24 @@ int main(){
         tree_date.add(lista[i].getNascimento(),aux);
     }
 
+    //Menu com switch 
     unsigned int op = 9;
     while(op!=0){
         string temp;
         string temp2;
-        cout << "-------------------- Arvore AVL --------------------" << endl;
+        cout << "--------------- Arvore AVL ---------------" << endl;
         cout << "1 - Buscar pessoa por CPF" << endl;
         cout << "2 - Buscar pessoa por Nome" << endl;
         cout << "3 - Buscar pessoa por Data de nascimento" << endl;
         cout << "0 - Sair do programa" << endl;
         cin >> op;
-
+        
         switch (op)
         {
+        case 0:
+            cout << "Saindo do programa..." << endl;
+            cout << "Desalocando memoria..." << endl;
+            break;
         case 1:
             cout << "Digite o CPF no formato xxx.xxx.xxx-xx: ";
             cin >> temp;
@@ -146,6 +183,7 @@ int main(){
         case 2:
             cout << "Digite o primeiro nome: ";
             cin >> temp;
+            temp = normalizeName(temp);
             nameSearch(tree_name,temp);
             break;
         case 3:
@@ -155,7 +193,6 @@ int main(){
             cin >> temp2;
             Date min;
             Date max;
-            Date test;
 
             min.toDate(temp);
             max.toDate(temp2);
@@ -171,7 +208,9 @@ int main(){
         }
     }
     
-
+    tree_cpf.clear();
+    tree_name.clear();
+    tree_date.clear();
     
     people.close();
 
