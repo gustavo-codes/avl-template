@@ -9,6 +9,7 @@ public:
     int mes;
     int ano;
 
+    //Recebe uma string no padrão de data americano e transforma no tipo Date
     void toDate(std::string s){
         std::string dia, mes ,ano;
         std::stringstream date;
@@ -22,7 +23,22 @@ public:
         this->ano = stoi(ano);
 
     };
+    //Recebe uma string no padrão de data brasileiro e transforma no tipo Date
+    void brToDate(std::string s){
+        std::string dia, mes ,ano;
+        std::stringstream date;
+        date << s;
+        getline(date, dia,'/');
+        getline(date, mes,'/');
+        getline(date, ano);
 
+        this->mes = stoi(mes);
+        this->dia = stoi(dia);
+        this->ano = stoi(ano);
+
+    };
+
+    //Converte o tipo Date para String no padrão brasileiro
     std::string toStr(){
         std::stringstream date;
         date << dia;

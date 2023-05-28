@@ -187,18 +187,22 @@ int main(){
             nameSearch(tree_name,temp);
             break;
         case 3:
-            cout << "Deseja pesquisar por pessoas de MM/DD/AAAA: ";
+            cout << "Deseja pesquisar por pessoas de DD/MM/AAAA: ";
             cin >> temp;
-            cout << "de " << temp << " ate MM/DD/AAAA: " ;
+            cout << "de " << temp << " ate DD/MM/AAAA: " ;
             cin >> temp2;
             Date min;
             Date max;
 
-            min.toDate(temp);
-            max.toDate(temp2);
+            min.brToDate(temp);
+            max.brToDate(temp2);
 
-            if(min>max){
-                cout << "Digite um intervalo de tempo válido" << endl;
+            if(min.dia<0 || min.dia>31 || max.dia<0 || max.dia>31){
+                cout << "Digitar um dia valido" << endl;
+            }else if(min.mes<1 || min.mes>12 || max.mes<1 || max.mes>12){
+                cout << "Digitar um mes valido" << endl;
+            }else if(min>max){
+                cout << "Digite um intervalo de tempo valido" << endl;
             }else{
                 dateSearch(tree_date,min,max);
             }
